@@ -1,0 +1,104 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://pub.glad.so/repository/maven-public/"
+        }
+    }
+    dependencies {
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:2.2.1"
+    }
+}
+
+group 'so.glad.oauth'
+version '1.0.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'org.sonarqube'
+apply plugin: 'maven-publish'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+    maven {
+        url "https://pub.glad.so/repository/maven-public/"
+    }
+}
+
+configurations {
+    providedRuntimes
+}
+
+dependencies {
+    compile("org.slf4j:slf4j-api:1.7.25")
+    compile("javax.cache:cache-api:1.0.0")
+    compile("org.apache.httpcomponents:httpclient:4.5.3")
+    compile("com.fasterxml.jackson.core:jackson-databind:2.8.7")
+    compileOnly("org.projectlombok:lombok:1.16.14")
+    testCompile("org.ehcache:ehcache:3.3.0")
+    testCompile("org.apache.logging.log4j:log4j-api:2.8.1")
+    testCompile("org.apache.logging.log4j:log4j-core:2.8.1")
+    testCompile("org.apache.logging.log4j:log4j-slf4j-impl:2.8.1")
+    testCompile("junit:junit:4.12")
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.4'
+    distributionUrl = "https://services.gradle.org/distributions/gradle-$gradleVersion-all.zip"
+}
+
+/**Maven Config **/
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allJava
+}
+
+task javadocJar(type: Jar, dependsOn: Javadoc) {
+    classifier = 'javadoc'
+//    from Javadoc.destinationDir
+}
+
+sonarqube {
+    properties {
+        property "sonar.host.url", "${SONAR_HOST_URL}"
+        property "sonar.forceAuthentication", true
+        property "sonar.login", "${SOGLAD_USERNAME}"
+        property "sonar.password", "${SOGLAD_PASSWORD}"
+        property "sonar.sources", sourceSets.main.java
+        property "sonar.exclusions", "**/*Generated.java"
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            pom.withXml {
+                def parentNode = asNode().appendNode('parent')
+                parentNode.appendNode('groupId', "${group}")
+                parentNode.appendNode('artifactId', "topup-clent")
+                parentNode.appendNode('version', "${version}")
+            }
+            artifacts {
+                archives javadocJar
+                archives sourcesJar
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            artifactUrls ["https://pub.glad.so/repository/maven-public/"]
+            if(project.version.endsWith('-SNAPSHOT')) {
+                url "https://pub.glad.so/repository/maven-snapshots/"
+            } else {
+                url "https://pub.glad.so/repository/maven-releases/"
+            }
+            credentials {
+                username "${SOGLAD_USERNAME}"
+                password "${SOGLAD_PASSWORD}"
+            }
+        }
+    }
+}
+
+publish.dependsOn jar
