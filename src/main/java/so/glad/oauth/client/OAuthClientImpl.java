@@ -149,6 +149,7 @@ public abstract class OAuthClientImpl implements OAuthClient {
     }
 
     public AccessToken accessToken(TokenGrant tokenGrant) {
+        this.checkDependencies();
         return post("/oauth/token", tokenGrant.toJson(), AccessToken.class);
     }
 }

@@ -45,6 +45,8 @@ public class TokenGrantProviderImpl implements TokenGrantProvider {
     @Override
     public TokenGrant refreshGrant(String refreshToken) {
         return new TokenGrant().setGrantType(Const.OAuth.GRANT_TYPE_REFRESH)
+                .setClientId(config.getConfig(Config.Key.CLIENT_ID))
+                .setClientSecret(config.getConfig(Config.Key.CLIENT_SECRET))
                 .setRefreshToken(refreshToken);
     }
 

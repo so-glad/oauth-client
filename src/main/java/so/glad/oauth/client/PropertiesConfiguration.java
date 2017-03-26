@@ -26,7 +26,7 @@ public class PropertiesConfiguration implements Configuration {
 
     @Override
     public String getConfig(String key) {
-        return properties.get(key).toString();
+        return properties.getProperty(key);
     }
 
     @Override
