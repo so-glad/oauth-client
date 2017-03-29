@@ -1,4 +1,4 @@
-package so.glad.oauth.client;
+package so.glad.environment;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -3,6 +3,8 @@ package so.glad.oauth.client;
 import junit.framework.TestCase;
 import org.junit.Assert;
 import org.junit.Test;
+import so.glad.environment.Configuration;
+import so.glad.environment.PropertiesConfiguration;
 import so.glad.oauth.Config;
 import so.glad.oauth.Const;
 

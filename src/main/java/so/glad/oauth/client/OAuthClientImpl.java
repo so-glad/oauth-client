@@ -15,6 +15,8 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import so.glad.environment.Configuration;
+import so.glad.environment.PropertiesConfiguration;
 import so.glad.oauth.Config;
 import so.glad.oauth.Const;
 
@@ -30,7 +32,7 @@ import java.util.List;
  * @author Cartoon Zhang
  * @since 2017/3/24 下午10:00
  */
-public abstract class OAuthClientImpl implements OAuthClient {
+public class OAuthClientImpl implements OAuthClient {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Setter

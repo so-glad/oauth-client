@@ -2,6 +2,7 @@ package so.glad.oauth.client;
 
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import so.glad.environment.Configuration;
 import so.glad.oauth.Config;
 import so.glad.oauth.Const;
 

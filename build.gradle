@@ -14,6 +14,7 @@ group 'so.glad.oauth'
 version '1.0.0-SNAPSHOT'
 
 apply plugin: 'java'
+apply plugin: "jacoco"
 apply plugin: 'org.sonarqube'
 apply plugin: 'maven-publish'
 //apply plugin: 'org.junit.platform.gradle.plugin'
@@ -37,6 +38,7 @@ dependencies {
     compile("org.apache.httpcomponents:httpclient:4.5.3")
     compile("com.fasterxml.jackson.core:jackson-databind:2.8.7")
     compileOnly("org.projectlombok:lombok:1.16.14")
+
     testCompile("org.ehcache:ehcache:3.3.0")
     testCompile("org.apache.logging.log4j:log4j-api:2.8.1")
     testCompile("org.apache.logging.log4j:log4j-core:2.8.1")
@@ -61,6 +63,11 @@ task javadocJar(type: Jar, dependsOn: Javadoc) {
 //    from Javadoc.destinationDir
 }
 
+jacoco {
+    toolVersion = "0.7.6.201602180812"
+    reportsDir = file("$buildDir/customJacocoReportDir")
+}
+
 sonarqube {
     properties {
         property "sonar.host.url", "${SONAR_HOST_URL}"
@@ -68,6 +75,7 @@ sonarqube {
         property "sonar.login", "${SOGLAD_USERNAME}"
         property "sonar.password", "${SOGLAD_PASSWORD}"
         property "sonar.sources", sourceSets.main.java
+        property "sonar.jacoco.reportPaths", "${project.buildDir}/jacoco/test.exec"
         property "sonar.exclusions", "**/*Generated.java"
     }
 }
@@ -104,4 +112,5 @@ publishing {
     }
 }
 
+//sonarqube.dependsOn jacocoTestCoverageVerification
 publish.dependsOn jar

@@ -2,6 +2,7 @@ package so.glad.oauth.client;
 
 import org.junit.Assert;
 import org.junit.Test;
+import so.glad.environment.PropertiesConfiguration;
 import so.glad.oauth.Const;
 
 /**

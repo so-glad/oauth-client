@@ -10,6 +10,7 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import so.glad.environment.Configuration;
 import so.glad.oauth.Const;
 
 import javax.cache.CacheManager;
